@@ -1,0 +1,656 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jorge Cordon – Curriculum Vitae / Resume</title>
+  <style>
+    :root {
+      --primary-color: #2c3e50;
+      --secondary-color: #3498db;
+      --accent-color: #2980b9;
+      --light-color: #ecf0f1;
+      --dark-color: #2c3e50;
+      --text-color: #333;
+      --background-color: #f9f9f9;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: var(--text-color);
+      background-color: var(--background-color);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 20px auto;
+      background: #fff;
+      box-shadow: 0 0 20px rgba(0,0,0,.1);
+      opacity: 0;
+      animation: fadeInUp 0.8s ease-out 0.2s forwards;
+    }
+    /* Force visibility when exporting */
+    .container.exporting { opacity: 1 !important; animation: none !important; transform: none !important; }
+
+    /* Header */
+    .profile-pic {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%; /* forma circular */
+      object-fit: cover;
+      border: 4px solid var(--secondary-color);
+      margin-right: 24px;
+}
+
+    header { background: var(--primary-color); color: #fff; padding: 20px 24px; position: relative; }
+    .header-top { display: flex; gap: 12px; justify-content: space-between; align-items: center; flex-wrap: wrap; }
+    .lang-select { display: flex; gap: 8px; align-items: center; }
+    .lang-select label { font-size: .9rem; opacity: .9; }
+    .lang-select select { padding: 6px 10px; border-radius: 8px; border: 1px solid #0000; background: var(--light-color); color: #111; }
+
+    .pdf-button {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: none;
+      background: var(--secondary-color);
+      color: #fff;
+      cursor: pointer;
+      font-size: .9rem;
+      transition: background .2s;
+      margin-left: auto;
+    }
+    .pdf-button:hover { background: var(--accent-color); }
+
+    .header-content { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; margin-top: 10px; }
+    .personal-info { flex: 2; }
+    h1 { font-size: 2.2rem; margin-bottom: 4px; }
+    .title { font-size: 1.2rem; color: var(--light-color); margin-bottom: 10px; }
+
+    .contact-info { flex: 1; text-align: right; }
+    .contact-info div { margin-bottom: 6px; display: flex; gap: 10px; justify-content: flex-end; align-items: center; }
+
+    .personal-details { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: .95rem; }
+    .detail-item { display: flex; align-items: center; gap: 6px; }
+
+    /* Sections */
+    section { padding: 22px 24px; border-bottom: 1px solid #eee; }
+    h2 { color: var(--secondary-color); margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid var(--secondary-color); display: flex; align-items: center; gap: 8px; }
+
+    .summary { background: var(--light-color); padding: 18px; font-size: 1.05rem; line-height: 1.8; border-radius: 8px; }
+
+    .experience-item { margin-bottom: 20px; }
+    .job-title { font-weight: 700; font-size: 1.1rem; color: var(--dark-color); }
+    .company { font-size: 1.02rem; color: var(--accent-color); margin-bottom: 4px; }
+    .dates { color: #555; opacity: .9; font-style: italic; margin-bottom: 8px; }
+    .responsibilities { margin-left: 20px; }
+    .responsibilities li { margin-bottom: 6px; }
+
+    .education-item, .certification-item { margin-bottom: 12px; }
+
+    .skills-container { display: flex; flex-wrap: wrap; gap: 10px; }
+    .skill { background: var(--light-color); padding: 8px 14px; border-radius: 18px; font-size: .92rem; }
+
+    .skill-category { margin-bottom: 14px; }
+    .skill-category h3 { margin-bottom: 8px; color: var(--dark-color); }
+
+    .languages { display: flex; gap: 20px; }
+    .language { flex: 1; }
+    .language-level { height: 10px; background: #ddd; border-radius: 5px; margin-top: 5px; position: relative; }
+    .language-level::after { content: ''; position: absolute; left: 0; top: 0; height: 100%; background: var(--secondary-color); border-radius: 5px; }
+    .spanish::after { width: 100%; }
+    .english::after { width: 80%; }
+
+    footer { text-align: center; padding: 18px; color: #777; font-size: .9rem; }
+
+    @media (max-width: 768px) {
+      .header-content { flex-direction: column; text-align: center; gap: 10px; }
+      .profile-pic { margin-right: 0; margin-bottom: 15px; }
+      .contact-info { text-align: center; }
+      .contact-info div { justify-content: center; }
+      .languages { flex-direction: column; }
+      .personal-details { justify-content: center; }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* PDF Export Style Override */
+    .pdf-export {
+      --text-color: #333;
+    }
+    .pdf-export, .pdf-export * { animation: none !important; transition: none !important; }
+    /* Avoid awkward page breaks while exporting to PDF */
+    .pdf-export h2 { page-break-after: avoid; break-after: avoid-page; }
+    .pdf-export .experience-item,
+    .pdf-export .education-item,
+    .pdf-export .certification-item,
+    .pdf-export .skill-category /*{ page-break-inside: avoid; break-inside: avoid-page; }*/
+    /* Education relies on h2 avoid rule; no forced break */
+    /* Skills page break handled by explicit .page-break element */
+    /* Explicit page-break element */
+    /*.page-break { display: none; }*/
+    .pdf-export .page-break { display: block; height: 0; page-break-before: always; break-before: page; }
+
+    /* Print-specific styles */
+    @media print {
+      body { background-color: #fff; font-size: 10pt; }
+      .container { box-shadow: none; border: none; width: 100%; max-width: 100%; }
+      .header-top, .pdf-button { display: none; }
+      header { background: transparent !important; color: #000 !important; padding: 20px 0; }
+      .title { color: #333 !important; }
+      .profile-pic { border-color: #ccc !important; }
+      h2 {
+        color: #000 !important;
+        border-bottom-color: #000;
+      }
+      .summary, .skill { background: transparent !important; }
+      .skill {
+        border: 1px solid #ccc;
+        padding: 6px 12px;
+      }
+      a { color: #000 !important; text-decoration: none; }
+      .language-level {
+        background: #eee;
+        border: 1px solid #ccc;
+      }
+      .language-level::after { background: #333 !important; }
+      footer { padding: 10px 0; }
+      /* Print fallback uses explicit .page-break element */
+      .page-break { display: block; height: 0; page-break-before: always; }
+    }
+  </style>
+  <link rel="stylesheet" href="lib/fontawesome/css/all.min.css">
+  <script src="lib/html2pdf.bundle.min.js" defer></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <div class="lang-select" aria-label="Language selector">
+          <label for="lang" data-i18n="selector.label">Idioma</label>
+          <select id="lang" aria-label="Language" title="Language">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+        <button id="download-pdf" class="pdf-button" data-i18n="button.pdf">Descargar PDF</button>
+      </div>
+
+      <div class="header-content">
+        <img src="foto/foto.JPG" alt="Foto de perfil" class="profile-pic" data-i18n-alt="alt.profilepic" crossorigin="anonymous">
+        <div class="personal-info">
+          <h1 id="name">Jorge Ovidio Cordon Guzman</h1>
+          <div class="title" data-i18n="title">Systems Administrator</div>
+          <div class="personal-details">
+            <div class="detail-item"><i class="fas fa-passport"></i><span data-i18n="nationality">Nacionalidad: Guatemalteco</span></div>
+            <div class="detail-item"><i class="fas fa-birthday-cake"></i><span data-i18n="birthdate">Fecha de nacimiento: 02 de septiembre de 1976</span></div>
+            <div class="detail-item"><i class="fas fa-map-marker-alt"></i><span data-i18n="birthplace">Lugar de nacimiento: Zacapa, Guatemala</span></div>
+          </div>
+        </div>
+        <div class="contact-info">
+          <div><i class="fas fa-phone"></i><span id="phone">+502 30309570</span></div>
+          <div><i class="fas fa-envelope"></i><span id="email">jorge.cordon@outlook.com</span></div>
+          <div><i class="fab fa-linkedin"></i><a id="linkedin" href="https://www.linkedin.com/in/jorgecordon/" target="_blank" rel="noopener">linkedin.com/in/jorgecordon</a></div>
+          <div><i class="fas fa-award credly-icon"></i><a id="credly" href="https://www.credly.com/users/jorge-cordon.a1e8451d" target="_blank" rel="noopener">jorge-cordon.a1e8451d</a></div>
+        </div>
+      </div>
+    </header>
+
+    <section class="summary">
+      <h2><i class="fas fa-user"></i><span data-i18n="section.summary">Resumen profesional</span></h2>
+      <p data-i18n="summary.text">
+        Administrador de sistemas con más de 20 años de experiencia en infraestructura. Experto en Windows Server, Active Directory, DNS y DHCP. Experiencia en VMware vSphere y vCenter, recuperación ante desastres con VMware SRM, automatización con PowerShell y soporte de hardware. Participación en proyectos con Azure AD, despliegue de VMs en Azure y fundamentos de AWS. Enfoque en resolución de incidentes, confiabilidad y entrega de proyectos.
+      </p>
+    </section>
+
+    <section class="experience">
+      <h2><i class="fas fa-briefcase"></i><span data-i18n="section.experience">Experiencia laboral</span></h2>
+
+      <div class="experience-item">
+        <div class="job-title" data-i18n="exp1.title">Sales Support Engineer – Data Center Solutions</div>
+        <div class="company">PBS Guatemala</div>
+        <div class="dates" data-i18n="exp1.dates">Febrero 2025 – Julio 2025</div>
+        <ul class="responsibilities">
+          <li data-i18n="exp1.r1">Soporte preventa para servidores, almacenamiento, HCI y virtualización</li>
+          <li data-i18n="exp1.r2">Dimensionamiento técnico y elaboración de BoM</li>
+          <li data-i18n="exp1.r3">Validación de soluciones según mejores prácticas y requerimientos</li>
+          <li data-i18n="exp1.r4">Presentaciones técnicas y demostraciones de producto</li>
+        </ul>
+      </div>
+
+      <div class="experience-item">
+        <div class="job-title" data-i18n="exp2.title">Infrastructure Management Sr. Analyst (WSP)</div>
+        <div class="company">Atos Guatemala</div>
+        <div class="dates" data-i18n="exp2.dates">Septiembre 2013 – Enero 2025</div>
+        <ul class="responsibilities">
+          <li data-i18n="exp2.r1">Administración de Windows Server, AD, DNS y DHCP</li>
+          <li data-i18n="exp2.r2">Soporte de VMware vSphere/vCenter y pruebas de DR con SRM</li>
+          <li data-i18n="exp2.r3">Automatización y reportería con PowerShell</li>
+          <li data-i18n="exp2.r4">Soporte de Nutanix</li>
+          <li data-i18n="exp2.r5">Participación en Azure AD y despliegue de VMs</li>
+          <li data-i18n="exp2.r6">Soporte de backup con Veritas/Symantec</li>
+        </ul>
+      </div>
+
+      <div class="experience-item">
+        <div class="job-title" data-i18n="exp3.title">Senior Server & Storage Administrator</div>
+        <div class="company">Telus International</div>
+        <div class="dates" data-i18n="exp3.dates">Marzo 2009 – Septiembre 2013</div>
+        <ul class="responsibilities">
+          <li data-i18n="exp3.r1">Diseño e implementación de AD, DHCP, DNS y WSUS</li>
+          <li data-i18n="exp3.r2">Soporte de nivel avanzado en múltiples ubicaciones en Centro America</li>
+          <li data-i18n="exp3.r3">Implementación de SCCM</li>
+          <li data-i18n="exp3.r4">Administración SAN (EMC, NetApp)</li>
+          <li data-i18n="exp3.r5">Instalación, configuración y despliegue de actualizaciones a la infraestructura de servidores Windows</li>
+          <li data-i18n="exp3.r6">Instalación y despliegue de nuevas infraestructura</li>
+          <li data-i18n="exp3.r7">Implementación de proxy BlueCoat para todos los clientes</li>
+        </ul>
+      </div>
+
+      <div class="experience-item">
+        <div class="job-title" data-i18n="exp4.title">Server Administrator</div>
+        <div class="company">ManPower, S.A. (Wal‑Mart Centroamérica)</div>
+        <div class="dates" data-i18n="exp4.dates">Marzo 2007 – Marzo 2009</div>
+        <ul class="responsibilities">
+          <li data-i18n="exp4.r1">Administración de 300 servidores Microsoft</li>
+          <li data-i18n="exp4.r2">Gestión de Active Directory y Exchange</li>
+          <li data-i18n="exp4.r3">Monitoreo con MOM 2005</li>
+          <li data-i18n="exp4.r4">Despliegue y configuración de antivirus McAfee EPO</li>
+        </ul>
+      </div>
+
+      <div class="experience-item">
+        <div class="job-title" data-i18n="exp5.title">Support Engineer</div>
+        <div class="company">GRUPO SEGA, S.A.</div>
+        <div class="dates" data-i18n="exp5.dates">Mayo 2006 – Marzo 2007</div>
+        <ul class="responsibilities">
+          <li data-i18n="exp5.r1">Soporte 2 nivel para servidores, sistemas operativos y Exchange</li>
+          <li data-i18n="exp5.r2">Implementación y soporte de antivirus corporativos</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="education">
+      <h2><i class="fas fa-graduation-cap"></i><span data-i18n="section.education">Formación académica</span></h2>
+      <div class="education-item">
+        <div class="job-title" data-i18n="edu1.title">Administración de Empresas con Orientación en Computación</div>
+        <div class="company">Universidad Galileo</div>
+        <div class="dates" data-i18n="edu1.dates">2000</div>
+      </div>
+      <div class="education-item">
+        <div class="job-title" data-i18n="edu2.title">Bachiller Industrial y Perito en Computación</div>
+        <div class="company">Instituto de Bachillerato en Computación</div>
+        <div class="dates">1993 – 1995</div>
+      </div>
+      <div class="education-item">
+        <div class="job-title" data-i18n="edu3.title">Diversificado</div>
+        <div class="company">Colegio José Cecilio del Valle</div>
+        <div class="dates">1990 – 1992</div>
+      </div>
+    </section>
+
+    <section class="certifications">
+      <h2><i class="fas fa-certificate"></i><span data-i18n="section.certs">Certificaciones</span></h2>
+      <div class="certification-item" data-i18n="cert1">VMware VCA5 – Data Center Virtualization</div>
+      <div class="certification-item" data-i18n="cert2">AWS Technical Professional</div>
+      <div class="certification-item" data-i18n="cert3">AWS Business Professional</div>
+      <div class="certification-item" data-i18n="cert4">AWS TCO & Cloud Economics</div>
+      <div class="certification-item" data-i18n="cert5">IBM Mainframe Systems Operator Nivel I y II</div>
+      <div class="certification-item" data-i18n="cert6">MS 70-290 Windows Server 2003</div>
+      <div class="certification-item" data-i18n="cert7">MS 70-270 Windows XP Professional</div>
+    </section>
+
+    <section class="skills">
+      <h2><i class="fas fa-tools"></i><span data-i18n="section.skills">Habilidades técnicas</span></h2>
+
+      <div class="skill-category">
+        <h3 data-i18n="skills.os">Sistemas operativos</h3>
+        <div class="skills-container">
+          <div class="skill">Windows Server 2008</div>
+          <div class="skill">Windows Server 2012</div>
+          <div class="skill">Windows Server 2016</div>
+          <div class="skill">Windows Server 2019</div>
+          <div class="skill">Windows Server 2022</div>
+          <div class="skill">Windows Server 2025</div>
+          <div class="skill">Windows 11</div>
+          <div class="skill">Linux (basic)</div>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <h3 data-i18n="skills.virt">Virtualización</h3>
+        <div class="skills-container">
+          <div class="skill">VMware vSphere/vCenter</div>
+          <div class="skill">VMware SRM</div>
+          <div class="skill">Nutanix</div>
+          <div class="skill">ProxMox</div>
+        </div>
+      </div>
+
+      <div class="skill-category">
+        <h3 data-i18n="skills.net">Infraestructura</h3>
+        <div class="skills-container">
+          <div class="skill">Active Directory</div>
+          <div class="skill">DNS</div>
+          <div class="skill">DHCP</div>
+          <div class="skill">WSUS</div>
+          <div class="skill">PowerShell</div>
+          <div class="skill">Power BI</div>
+          <div class="skill">Power Automate</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="languages-section">
+      <h2><i class="fas fa-language"></i><span data-i18n="section.langs">Idiomas</span></h2>
+      <div class="languages">
+        <div class="language">
+          <div data-i18n="lang.es">Español</div>
+          <div class="language-level spanish"></div>
+          <div data-i1-n="lang.es.level">Nativo</div>
+        </div>
+        <div class="language">
+          <div data-i18n="lang.en">Inglés</div>
+          <div class="language-level english"></div>
+          <div data-i18n="lang.en.level">Avanzado (C1)</div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p><span data-i18n="updated">Actualizado</span>: <span id="updated-date"></span></p>
+    </footer>
+  </div>
+
+  <script>
+    const $ = (sel, root = document) => root.querySelector(sel);
+    const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+    const translations = {
+      es: {
+        'button.pdf': 'Descargar PDF',
+        'alt.profilepic': 'Foto de perfil',
+        'selector.label': 'Idioma',
+        title: 'Administrador de Sistemas',
+        nationality: 'Nacionalidad: Guatemalteco',
+        birthdate: 'Fecha de nacimiento: 02 de septiembre de 1976',
+        birthplace: 'Lugar de nacimiento: Zacapa, Guatemala',
+        'section.summary': 'Resumen profesional',
+        'summary.text': 'Administrador de sistemas con más de 20 años de experiencia en infraestructura. Experto en Windows Server, Active Directory, DNS y DHCP. Experiencia en VMware vSphere y vCenter, recuperación ante desastres con VMware SRM, automatización con PowerShell y soporte de hardware. Participación en proyectos con Azure AD, despliegue de VMs en Azure y fundamentos de AWS. Enfoque en resolución de incidentes, confiabilidad y entrega de proyectos.',
+        'section.experience': 'Experiencia laboral',
+        'exp1.title': 'Sales Support Engineer – Data Center Solutions',
+        'exp1.dates': 'Febrero 2025 – Julio 2025',
+        'exp1.r1': 'Soporte preventa para servidores, almacenamiento, HCI y virtualización',
+        'exp1.r2': 'Dimensionamiento técnico y elaboración de BoM',
+        'exp1.r3': 'Validación de soluciones según mejores prácticas y requerimientos',
+        'exp1.r4': 'Presentaciones técnicas y demostraciones de producto',
+        'exp2.title': 'Infrastructure Management Sr. Analyst (WSP)',
+        'exp2.dates': 'Septiembre 2013 – Enero 2025',
+        'exp2.r1': 'Administración de Windows Server, AD, DNS y DHCP',
+        'exp2.r2': 'Soporte de VMware vSphere/vCenter y pruebas de DR con SRM',
+        'exp2.r3': 'Automatización y reportería con PowerShell',
+        'exp2.r4': 'Soporte de Nutanix',
+        'exp2.r5': 'Participación en Azure AD y despliegue de VMs',
+        'exp2.r6': 'Soporte de backup con Veritas/Symantec',
+        'exp3.title': 'Senior Server & Storage Administrator',
+        'exp3.dates': 'Marzo 2009 – Septiembre 2013',
+        'exp3.r1': 'Diseño e implementación de AD, DHCP, DNS y WSUS',
+        'exp3.r2': 'Soporte de nivel avanzado en múltiples ubicaciones en Centro America',
+        'exp3.r3': 'Implementación de SCCM',
+        'exp3.r4': 'Administración SAN (EMC, NetApp)',
+        'exp3.r5': 'Instalación, configuración y despliegue de actualizaciones a la infraestructura de servidores Windows',
+        'exp3.r6': 'Instalación y despliegue de nuevas infraestructura',
+        'exp3.r7': 'Implementación de proxy BlueCoat para todos los clientes',
+        'exp4.title': 'Server Administrator',
+        'exp4.dates': 'Marzo 2007 – Marzo 2009',
+        'exp4.r1': 'Administración de 300 servidores Microsoft',
+        'exp4.r2': 'Gestión de Active Directory y Exchange',
+        'exp4.r3': 'Monitoreo con MOM 2005',
+        'exp4.r4': 'Despliegue y configuración de antivirus McAfee EPO',
+        'exp5.title': 'Support Engineer',
+        'exp5.dates': 'Mayo 2006 – Marzo 2007',
+        'exp5.r1': 'Soporte nivel 2 para servidores, sistemas operativos y Exchange',
+        'exp5.r2': 'Implementación y soporte de antivirus corporativos',
+        'section.education': 'Formación académica',
+        'edu1.title': 'Administración de Empresas con Orientación en Computación',
+        'edu1.dates': '2000',
+        'edu2.title': 'Bachiller Industrial y Perito en Computación',
+        'edu3.title': 'Diversificado',
+        'section.certs': 'Certificaciones',
+        cert1: 'VMware VCA5 – Data Center Virtualization',
+        cert2: 'AWS Technical Professional',
+        cert3: 'AWS Business Professional',
+        cert4: 'AWS TCO & Cloud Economics',
+        cert5: 'IBM Mainframe Systems Operator Nivel I y II',
+        cert6: 'MS 70-290 Windows Server 2003',
+        cert7: 'MS 70-270 Windows XP Professional',
+        'section.skills': 'Habilidades técnicas',
+        'skills.os': 'Sistemas operativos',
+        'skills.virt': 'Virtualización',
+        'skills.net': 'Infraestructura',
+        'section.langs': 'Idiomas',
+        'lang.es': 'Español',
+        'lang.es.level': 'Nativo',
+        'lang.en': 'Inglés',
+        'lang.en.level': 'Avanzado (B2/C1)',
+        updated: 'Actualizado'
+      },
+      en: {
+        'button.pdf': 'Download PDF',
+        'alt.profilepic': 'Profile picture',
+        'selector.label': 'Language',
+        title: 'Systems Administrator',
+        nationality: 'Nationality: Guatemalan',
+        birthdate: 'Date of birth: September 2, 1976',
+        birthplace: 'Place of birth: Zacapa, Guatemala',
+        'section.summary': 'Professional summary',
+        'summary.text': 'Systems Administrator with 20+ years of infrastructure experience. Expert in Windows Server, Active Directory, DNS and DHCP. Skilled with VMware vSphere and vCenter, disaster recovery using VMware SRM, PowerShell automation. Involved in Azure AD projects, Azure VM deployments, and AWS fundamentals. Focused on incident resolution, reliability, and project delivery.',
+        'section.experience': 'Work experience',
+        'exp1.title': 'Sales Support Engineer – Data Center Solutions',
+        'exp1.dates': 'February 2025 – July 2025',
+        'exp1.r1': 'Pre‑sales support for servers, storage, HCI, and virtualization',
+        'exp1.r2': 'Solution sizing and Bill of Materials (BoM)',
+        'exp1.r3': 'Solution validation against best practices and requirements',
+        'exp1.r4': 'Technical presentations and product demos',
+        'exp2.title': 'Infrastructure Management Sr. Analyst (WSP)',
+        'exp2.dates': 'September 2013 – January 2025',
+        'exp2.r1': 'Windows Server, AD, DNS and DHCP administration',
+        'exp2.r2': 'VMware vSphere/vCenter support and DR testing with SRM',
+        'exp2.r3': 'Automation and reporting with PowerShell',
+        'exp2.r4': 'Nutanix support',
+        'exp2.r5': 'Azure AD administration and VM deployments',
+        'exp2.r6': 'Backup support with Veritas/Symantec',
+        'exp3.title': 'Senior Server & Storage Administrator',
+        'exp3.dates': 'March 2009 – September 2013',
+        'exp3.r1': 'Designed and implemented AD, DHCP, DNS, and WSUS',
+        'exp3.r2': 'Tier‑3 support across multiple branches across Central America',
+        'exp3.r3': 'SCCM implementation',
+        'exp3.r4': 'SAN administration (EMC, NetApp)',
+        'exp3.r5': 'Install, configure and deploy of updates to the Windows servers infrastructure',
+        'exp3.r6': 'Install and deploy new infrastructure',
+        'exp3.r7': 'BlueCoat proxy implementation for all the clients',
+        'exp4.title': 'Server Administrator',
+        'exp4.dates': 'March 2007 – March 2009',
+        'exp4.r1': 'Administration of 300 Microsoft servers',
+        'exp4.r2': 'Active Directory and Exchange management',
+        'exp4.r3': 'Monitoring with MOM 2005',
+        'exp4.r4': 'Deploy and configure of McAfee EPO antivirus',
+        'exp5.title': 'Support Engineer',
+        'exp5.dates': 'May 2006 – March 2007',
+        'exp5.r1': 'Tier 2 support for servers, operating systems, and Exchange',
+        'exp5.r2': 'Corporate antivirus implementation and support',
+        'section.education': 'Education',
+        'edu1.title': 'Business Administration with Computer Orientation',
+        'edu1.dates': '2000',
+        'edu2.title': 'Industrial Baccalaureate and Computer Expert',
+        'edu3.title': 'High school diploma',
+        'section.certs': 'Certifications',
+        cert1: 'VMware VCA5 – Data Center Virtualization',
+        cert2: 'AWS Technical Professional',
+        cert3: 'AWS Business Professional',
+        cert4: 'AWS TCO & Cloud Economics',
+        cert5: 'IBM Mainframe Systems Operator Level I & II',
+        cert6: 'MS 70-290 Windows Server 2003',
+        cert7: 'MS 70-270 Windows XP Professional',
+        'section.skills': 'Technical skills',
+        'skills.os': 'Operating systems',
+        'skills.virt': 'Virtualización',
+        'skills.net': 'Infrastructure',
+        'section.langs': 'Languages',
+        'lang.es': 'Spanish',
+        'lang.es.level': 'Native',
+        'lang.en': 'English',
+        'lang.en.level': 'Advanced (B2/C1)',
+        updated: 'Updated'
+      }
+    };
+ 
+    function setLang(lang) {
+      const dict = translations[lang] || translations.es;
+      $$('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+      // Also translate attributes like 'alt'
+      $$('[data-i18n-alt]').forEach(el => {
+        const key = el.getAttribute('data-i18n-alt');
+        if (dict[key] !== undefined) el.alt = dict[key];
+      });
+      document.documentElement.lang = lang;
+      localStorage.setItem('cv_lang', lang);
+
+      // Update date format based on new language
+      const now = new Date();
+      const dateLocale = lang === 'en' ? 'en-US' : 'es-GT';
+      const fmt = new Intl.DateTimeFormat(dateLocale, { year: 'numeric', month: 'long' });
+      $('#updated-date').textContent = fmt.format(now);
+    }
+
+    // Ensure html2pdf is available; attempt lazy-load if missing
+    function ensureHtml2Pdf() {
+      return new Promise((resolve, reject) => {
+        if (window.html2pdf) return resolve();
+
+        // Load only local copy
+        const existing = document.querySelector('script[data-dynamic-html2pdf]');
+        if (existing) {
+          existing.addEventListener('load', () => window.html2pdf ? resolve() : reject(new Error('html2pdf not available after load')));
+          existing.addEventListener('error', () => reject(new Error('Failed to load html2pdf')));
+          return;
+        }
+
+        const s = document.createElement('script');
+        s.src = 'lib/html2pdf.bundle.min.js';
+        s.defer = true;
+        s.setAttribute('data-dynamic-html2pdf', '');
+        s.onload = () => window.html2pdf ? resolve() : reject(new Error('html2pdf not available after load'));
+        s.onerror = () => reject(new Error('Failed to load local html2pdf'));
+        document.head.appendChild(s);
+      });
+    }
+
+    function waitForImages(root=document) {
+      const imgs = Array.from(root.querySelectorAll('img'));
+      const pending = imgs.filter(img => !img.complete || img.naturalWidth === 0);
+      if (!pending.length) return Promise.resolve();
+      return Promise.all(pending.map(img => new Promise(res => {
+        img.onload = img.onerror = () => res();
+      })));
+    }
+
+    async function generatePdf() {
+      const lang = $('#lang').value;
+      const name = $('#name').textContent.trim();
+      const date = new Date().toISOString().slice(0, 10);
+      const filename = `CV_${name.replace(/\s+/g, '_')}_${lang.toUpperCase()}_${date}.pdf`;
+
+      const element = $('.container');
+      const headerControls = $('.header-top');
+      const pdfButton = $('#download-pdf');
+      const originalButtonText = pdfButton.textContent;
+
+      // --- Pre-generation setup ---
+      pdfButton.disabled = true;
+      pdfButton.textContent = lang === 'en' ? 'Generating...' : 'Generando...';
+      
+      // Add class to force solid colors and hide controls
+      document.body.classList.add('pdf-export');
+      element.classList.add('exporting');
+      headerControls.style.display = 'none';
+
+      const opt = {
+        margin:       [0.5, 0.5, 0.5, 0.5],
+        filename:     filename,
+        image:        { type: 'jpeg', quality: 0.98 },
+        html2canvas:  {
+            scale: 2,
+            useCORS: true,
+            allowTaint: true,
+            logging: true,
+            backgroundColor: '#ffffff'
+        },
+        pagebreak:    { mode: ['css'] },
+        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+
+      // --- Generate PDF and then restore the view ---
+      try {
+        // Make sure the library is present
+        await ensureHtml2Pdf();
+        await waitForImages(element);
+        // small delay to let reflow settle after hiding controls
+        await new Promise(r => setTimeout(r, 50));
+        if (!window.html2pdf) throw new Error('html2pdf is not available');
+        await html2pdf().set(opt).from(element).save();
+      } catch (err) {
+        console.error("PDF generation failed:", err);
+        const msg = lang === 'en'
+          ? 'There was an error generating the PDF. Please check your internet connection (to load the PDF library) and try again.'
+          : 'Hubo un error al generar el PDF. Verifica tu conexión a internet (para cargar la librería de PDF) y vuelve a intentarlo.';
+        alert(msg);
+        // Fallback to browser print as an alternative PDF generation
+        try { window.print(); } catch (_) {}
+      } finally {
+        // Restore view
+        document.body.classList.remove('pdf-export');
+        element.classList.remove('exporting');
+        headerControls.style.display = 'flex';
+        pdfButton.disabled = false;
+        pdfButton.textContent = originalButtonText;
+      }
+    }
+
+    function initLang() {
+      const saved = localStorage.getItem('cv_lang');
+      const select = $('#lang');
+      if (saved && translations[saved]) {
+        select.value = saved;
+        setLang(saved);
+      } else {
+        // Auto based on browser
+        const browser = (navigator.language || 'es').slice(0,2);
+        const lang = translations[browser] ? browser : 'es';
+        select.value = lang;
+        setLang(lang);
+      }
+      select.addEventListener('change', e => setLang(e.target.value));
+      $('#download-pdf').addEventListener('click', generatePdf);
+    }
+
+    document.addEventListener('DOMContentLoaded', initLang);
+  </script>
+</body>
+</html>
+
+
